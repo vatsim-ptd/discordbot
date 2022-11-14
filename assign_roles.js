@@ -1,12 +1,12 @@
 async function assignRoles(member) {
     const MANAGED_ROLES = ["Supervisor", "Administrator", "New Member", "PPL", "IR", "CMEL", "ATPL"];
-    const discordCidResponse = await fetch(`https://apiv2-dev.vatsim.net/v2/members/discord/${member.user.id}`);
+    const discordCidResponse = await fetch(`https://apiv2-dev.vatsim.net/v2/members/discord/${member.user.id}`).catch(error => console.trace(error));
     let discordCidBody = await discordCidResponse.json();
     let cid = discordCidBody.user_id;
     if (discordCidBody.detail === 'Not Found') {
         return;
     }
-    const ratingsResponse = await fetch(`https://api.vatsim.net/api/ratings/${cid}`);
+    const ratingsResponse = await fetch(`https://api.vatsim.net/api/ratings/${cid}`).catch(error => console.trace(error));
     const ratingsBody = await ratingsResponse.json();
     let rating = ratingsBody.rating;
     let pilotrating = ratingsBody.pilotrating;
