@@ -7,7 +7,7 @@ module.exports = {
         console.log(`Logged in as ${client.user.tag}`);
         client.user.setActivity('The VATSIM Network', { type: ActivityType.Watching })
     setInterval(async function() {
-        const guild = client.guilds.cache.get("1037908270737784872");
+        const guild = client.guilds.cache.get("901078003482783765");
         const members = await guild.members.fetch();
         members.forEach(member => assignRoles(member));
     },60*60*1000)
