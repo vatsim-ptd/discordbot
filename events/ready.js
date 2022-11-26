@@ -9,7 +9,8 @@ module.exports = {
     setInterval(async function() {
         const guild = client.guilds.cache.get("1037908270737784872");
         const members = await guild.members.fetch();
-        members.forEach(member => assignRoles(member));
+        members.forEach(member => assignRoles(member))
+        console.log("I have assigned everyone's roles");
     },60*60*1000)
     },
 };
