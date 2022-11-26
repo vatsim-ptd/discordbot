@@ -39,8 +39,7 @@ async function assignRoles(member) {
                 member.roles.remove(discordRole).catch(e => console.log(e));
             }
         }
-    }
-    console.log(`Done Assigning Roles to ${member.user.id} , ${cid} - ${roles.join(", ")}`);
+    };
     return roles.join(", ");
 }
 
