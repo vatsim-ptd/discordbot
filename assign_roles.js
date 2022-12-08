@@ -1,13 +1,19 @@
 async function assignRoles(member) {
     const MANAGED_ROLES = ["Supervisor", "Administrator", "New Member", "PPL", "IR", "CMEL", "ATPL"];
     const discordCidResponse = await fetch(`https://apiv2-dev.vatsim.net/v2/members/discord/${member.user.id}`).catch(error => console.trace(error));
-    let discordCidBody = await discordCidResponse.json();
+    if (discordCidResponse.status !== 200) {
+        console.log(`The discordCidResponse could not be completed as dialed due to a status of ${discordCidResponse.status}`)
+    }
+    let discordCidBody = await discordCidResponse.json().catch(error => console.trace((error)));
     let cid = discordCidBody.user_id;
     if (discordCidBody.detail === 'Not Found') {
         return;
     }
     const ratingsResponse = await fetch(`https://api.vatsim.net/api/ratings/${cid}`).catch(error => console.trace(error));
-    const ratingsBody = await ratingsResponse.json();
+    if (ratingsResponse.status !== 200) {
+        console.log(`The ratingsResponse could not be completed as dialed due to a status of ${ratingsResponse.status}`)
+    }
+    const ratingsBody = await ratingsResponse.json().catch(error => console.trace((error)));
     let rating = ratingsBody.rating;
     let pilotrating = ratingsBody.pilotrating;
     let roles = [];
