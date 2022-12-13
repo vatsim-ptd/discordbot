@@ -7,8 +7,11 @@ async function assignRoles(member) {
     if (discordCidResponse.status === 404) {
         return;
     }
-    let discordCidBody = await discordCidResponse.json().catch(error => console.trace((error)));
+    let discordCidBody = await discordCidResponse.json().catch(error => console.trace(error));
     let cid = discordCidBody.user_id;
+    if (cid === undefined) {
+        return
+    }
     if (discordCidBody.status === 404) {
         return;
     }
