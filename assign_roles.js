@@ -1,5 +1,5 @@
 async function assignRoles(member) {
-    const MANAGED_ROLES = ["Supervisor", "Administrator", "New Member", "PPL", "IR", "CMEL", "ATPL"];
+    const MANAGED_ROLES = ["Supervisor", "Administrator", "New Member", "PPL", "IR", "CMEL", "ATPL", "Flight Instructor", "Flight Examiner"];
     const discordCidResponse = await fetch(`https://apiv2-dev.vatsim.net/v2/members/discord/${member.user.id}`).catch(error => console.trace(error));
     if (!discordCidResponse || discordCidResponse.status !== 200) {
         console.log(`The discordCidResponse could not be completed as dialed for ${member.displayName}`)
@@ -40,6 +40,10 @@ async function assignRoles(member) {
         roles.push("CMEL");
     } else if (pilotrating === 15) {
         roles.push("ATPL");
+    } else if (pilotrating === 31){
+        roles.push("Flight Instructor")
+    } else if (pilotrating === 63){
+        roles.push("Flight Examiner")
     }
     for (const role of MANAGED_ROLES) {
         const discordRole = member.guild.roles.cache.find(r => r.name === role);
@@ -52,7 +56,7 @@ async function assignRoles(member) {
                 member.roles.remove(discordRole).catch(e => console.log(e));
             }
         }
-    };
+    }
     return roles.join(", ");
 }
 
