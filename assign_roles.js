@@ -4,7 +4,7 @@ const limit = pLimit(10);
 
 async function assignRoles(member) {
     const MANAGED_ROLES = ["Supervisor", "Administrator", "New Member", "PPL", "IR", "CMEL", "ATPL", "Flight Instructor", "Flight Examiner", "No Military Rating", "M1", "M2","M3","M4"];
-    const discordCidResponse = await fetch(`https://apiv2-dev.vatsim.net/v2/members/discord/${member.user.id}`).catch(error => console.trace(error));
+    const discordCidResponse = await fetch(`https://api.vatsim.net/v2/members/discord/${member.user.id}`).catch(error => console.trace(error));
     if (!discordCidResponse || discordCidResponse.status !== 200) {
         console.log(`The discordCidResponse could not be completed as dialed for ${member.displayName}`)
         return
@@ -17,7 +17,7 @@ async function assignRoles(member) {
     if (discordCidBody.detail === 'Not Found') {
         return;
     }
-    const ratingsResponse = await fetch(`https://api.vatsim.net/api/ratings/${cid}`).catch(error => console.trace(error));
+    const ratingsResponse = await fetch(`https://api.vatsim.net/v2/members/${cid}`).catch(error => console.trace(error));
     if (ratingsResponse.status !== 200) {
         console.log(`The ratingsResponse could not be completed as dialed due to a status of ${ratingsResponse.status}`)
     }
