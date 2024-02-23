@@ -9,8 +9,12 @@ module.exports = {
     setInterval(async function() {
         const guild = client.guilds.cache.get("901078003482783765");
         const members = await guild.members.fetch();
-        members.forEach(member => assignRoles(member))
+        members.forEach(member =>
+           setInterval(function (){
+               assignRoles(member)
+           },500)
+        )
         console.log("I have assigned everyone's roles");
-    },60*60*1000)
+    },2*12*60*60*1000)
     },
 };
