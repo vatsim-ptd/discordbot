@@ -75,7 +75,7 @@ async function assignRoles(member) {
                 member.roles.add(discordRole).catch(e => console.log(e));
             }
         } else {
-            if (member.roles.cache.some(r => r.name === role)) {
+            if (member.roles.cache.some(r => r.name !== role)) {
                 member.roles.remove(discordRole).catch(e => console.log(e));
             }
         }
