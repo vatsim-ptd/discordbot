@@ -1,13 +1,25 @@
 {
+  "name": "vatsim-ptd-discord-bot",
+  "version": "2.0.0",
+  "description": "The Discord bot to manage the PTD discord server",
+  "main": "dist/bot.js",
+  "keywords": [],
+  "author": "vFlyingCowboy",
+  "license": "ISC",
   "dependencies": {
-    "discord.js": "^14.11.0",
+    "cron": "^3.1.7",
+    "discord.js": "^14.16.3",
     "dotenv": "^16.0.3",
-    "node-cron": "^3.0.3",
-    "nodemon": "^2.0.20",
+    "nodemon": "^3.1.7",
     "p-limit": "^3.1.0"
   },
+  "devDependencies": {
+    "tsx": "^4.7.2",
+    "typescript": "^5.6.2"
+  },
   "scripts": {
-    "start": "node bot.js",
-    "dev": "nodemon bot.js"
+    "start:dev": "tsx watch src/bot.ts",
+    "build": "tsc",
+    "commands": "tsx src/deploy-commands.ts"
   }
 }

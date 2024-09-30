@@ -1,11 +1,12 @@
-const {assignRoles} = require("../assign_roles.js");
-const {SlashCommandBuilder} = require('discord.js');
-const {EmbedBuilder} = require('discord.js');
-module.exports = {
+import {Command, EmbedBuilder, SlashCommandBuilder} from 'discord.js';
+import {assignRoles} from "../../functions/assignRoles";
+
+const assignRole: Command = {
     data: new SlashCommandBuilder()
         .setName('assign-roles')
-        .setDescription('Assigns your VATSIM Rating Roles!'), async execute(interaction) {
-        const roleStr = await assignRoles(interaction.member);
+        .setDescription('Assigns your VATSIM Rating Roles!'),
+    async execute(interaction) {
+        const roleStr =  await assignRoles(interaction.member);
         const embed = new EmbedBuilder()
             .setAuthor({
                 name: `${interaction.member.displayName}`, iconURL: `${interaction.user.displayAvatarURL()}`
@@ -17,6 +18,8 @@ module.exports = {
         await interaction.reply({
             embeds: [embed],
             ephemeral: true
-        }).catch(error => (console.trace(`I failed at the edit reply stage`)))
-    }
+        }).catch((error: any) => (console.trace(`Error found during the reply section of the member driven assigning roles functions`, error)))
+    },
 };
+
+export default assignRole;

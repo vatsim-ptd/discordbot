@@ -2,7 +2,7 @@ const pLimit = require('p-limit');
 
 const limit = pLimit(10);
 
-async function assignRoles(member) {
+export async function assignRoles(member) {
     const MANAGED_ROLES = ["Supervisor", "Administrator", "New Member", "PPL", "IR", "CMEL", "ATPL", "Flight Instructor", "Flight Examiner", "No Military Rating", "M1", "M2","M3","M4"];
     const discordCidResponse = await fetch(`https://api.vatsim.net/v2/members/discord/${member.user.id}`, {
         headers : {
@@ -18,16 +18,19 @@ async function assignRoles(member) {
     if (cid === undefined) {
         return
     }
-    if (discordCidBody.detail === 'Not Found') {
+    if (discordCidBody.detail) {
         return;
     }
     const ratingsResponse = await fetch(`https://api.vatsim.net/v2/members/${cid}`, {
         headers : {
             "User-Agent" : 'PTDDiscordBot'
         }}).catch(error => console.trace(error));
+    //@ts-ignore
     if (ratingsResponse.status !== 200) {
+        //@ts-ignore
         console.log(`The ratingsResponse could not be completed as dialed due to a status of ${ratingsResponse.status}`)
     }
+    //@ts-ignore
     const ratingsBody = await ratingsResponse.json().catch(error => console.trace((error)));
     if (ratingsBody === undefined) {
         return
@@ -39,34 +42,51 @@ async function assignRoles(member) {
 
     if (rating === 11) {  //SUP
         roles.push("Supervisor");
-    } else if (rating === 12) {  //ADM
+    }
+    if (rating === 12) {  //ADM
         roles.push("Administrator");
     }
-    if (pilotrating === 0) {
-        roles.push("New Member");
-    } else if (pilotrating === 1) {
-        roles.push("PPL");
-    } else if (pilotrating === 3) {
-        roles.push("IR");
-    } else if (pilotrating === 7) {
-        roles.push("CMEL");
-    } else if (pilotrating === 15) {
-        roles.push("ATPL");
-    } else if (pilotrating === 31){
-        roles.push("Flight Instructor")
-    } else if (pilotrating === 63){
-        roles.push("Flight Examiner")
+
+    switch (pilotrating){
+        case 0 :
+            roles.push("New Member");
+            break
+        case 1:
+            roles.push("PPL");
+            break;
+        case 3:
+            roles.push("IR");
+            break;
+        case 7:
+            roles.push("CMEL");
+            break;
+        case 15:
+            roles.push("ATPL");
+            break;
+        case 31:
+            roles.push("Flight Instructor");
+            break;
+        case 63:
+            roles.push("Flight Examiner");
+            break;
     }
-    if(milrating === 0){
-        roles.push("No Military Rating")
-    } else if (milrating === 1){
-        roles.push("M1")
-    } else if (milrating === 3){
-        roles.push("M2")
-    } else if(milrating === 7){
-        roles.push("M3")
-    } else if(milrating === 15){
-        roles.push("M4")
+
+    switch (milrating){
+        case 0:
+            roles.push("No Military Rating")
+            break;
+        case 1:
+            roles.push("M1")
+            break;
+        case 3:
+            roles.push("M2")
+            break;
+        case 7:
+            roles.push("M3")
+            break;
+        case 15:
+            roles.push("M4")
+            break;
     }
     for (const role of MANAGED_ROLES) {
         const discordRole = member.guild.roles.cache.find(r => r.name === role);

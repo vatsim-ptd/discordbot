@@ -1,11 +1,12 @@
-const {assignRoles} = require("../assign_roles.js");
-const {SlashCommandBuilder} = require('discord.js');
-const {EmbedBuilder} = require('discord.js');
-const wait = require('node:timers/promises').setTimeout;
-module.exports = {
+import {Command, EmbedBuilder, PermissionsBitField, SlashCommandBuilder} from 'discord.js';
+import {setTimeout as wait} from "node:timers/promises";
+import {assignRoles} from "../../functions/assignRoles";
+
+const memberRoles: Command = {
     data: new SlashCommandBuilder()
         .setName('member-roles')
         .setDescription('Assigns a members VATSIM Rating Roles!')
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.KickMembers)
         .addUserOption(option => option
             .setName('member-name')
             .setDescription("The User you would like to assign roles to.")
@@ -26,6 +27,8 @@ module.exports = {
             .setTimestamp()
         await wait(1000)
         await interaction.editReply({embeds: [embed]}).catch(error =>
-            console.error`I failed at the edit reply stage`)
-    }
+            console.trace(error))
+    },
 };
+
+export default memberRoles;

@@ -1,9 +1,10 @@
-const {SlashCommandBuilder} = require('discord.js');
-const {EmbedBuilder} = require('discord.js');
-module.exports = {
+import {Command, EmbedBuilder, PermissionsBitField, SlashCommandBuilder} from 'discord.js';
+
+const getCid: Command = {
     data: new SlashCommandBuilder()
         .setName('get-cid')
         .setDescription('Gets the CID to a member in the server')
+        .setDefaultMemberPermissions(PermissionsBitField.Flags.KickMembers)
         .addUserOption(option => option
             .setName('member-name')
             .setDescription("The User you would like to get the CID for.")
@@ -23,6 +24,8 @@ module.exports = {
             .setColor('#2483c5')
             .setTimestamp()
         await interaction.reply({embeds: [embed], ephemeral: true}).catch(error =>
-            console.error`I failed at the edit reply stage`)
-    }
+            console.trace(error))
+    },
 };
+
+export default getCid;
